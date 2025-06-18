@@ -20,11 +20,43 @@ const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Crea un nuovo utente
-    // Se l'utente che sta creando è il primo, assegna il ruolo di admin
-    // altrimenti usa il ruolo fornito o 'user' come default
+    // Determina il ruolo dell'utente
+    let userRole = 'user'; // Default è utente normale
+    
+    // Caso 1: Se è il primo utente nel sistema, assegna ruolo admin
     const isFirstUser = (await prisma.user.count()) === 0;
-    const userRole = isFirstUser ? 'admin' : (role || 'user');
+    if (isFirstUser) {
+      userRole = 'admin';
+    }
+    // Caso 2: Se è richiesto un ruolo admin e la richiesta proviene da un admin esistente
+    else if (role === 'admin') {
+      // Verifica se la richiesta proviene da un admin
+      // Controlla l'header di autorizzazione
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const token = authHeader.split(' ')[1];
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          
+          // Verifica se l'utente che fa la richiesta è un admin
+          if (decoded.role !== 'admin') {
+            return res.status(403).json({ 
+              message: 'Solo gli amministratori possono creare altri amministratori.' 
+            });
+          }
+          
+          // Se è un admin, permetti di creare un altro admin
+          userRole = 'admin';
+        } catch (err) {
+          return res.status(401).json({ message: 'Token non valido o scaduto.' });
+        }
+      } else if (role === 'admin') {
+        // Se è richiesto un ruolo admin ma non c'è token di autenticazione
+        return res.status(401).json({ 
+          message: 'Autenticazione richiesta per creare un amministratore.' 
+        });
+      }
+    }
 
     const user = await prisma.user.create({
       data: {

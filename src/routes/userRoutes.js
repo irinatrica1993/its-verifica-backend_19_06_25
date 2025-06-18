@@ -3,6 +3,8 @@ const { getAllUsers, getUserById, updateUser, deleteUser } = require('../control
 const { authenticate, isAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
+//cors
+const cors = require('cors');
 
 // Tutte le rotte richiedono autenticazione
 router.use(authenticate);

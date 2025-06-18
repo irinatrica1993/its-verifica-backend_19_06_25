@@ -1,17 +1,41 @@
 const { PrismaClient } = require('@prisma/client');
 
+// Definisci un DATABASE_URL di fallback per l'ambiente di produzione
+// Utilizziamo il vero URL del database MongoDB Atlas
+const DATABASE_URL = process.env.DATABASE_URL || 'mongodb+srv://irinatrica140:Cassiere01@cluster0.2ik5jax.mongodb.net/its-verifica-db?retryWrites=true&w=majority&appName=Cluster0';
+
+// Stampa informazioni di debug sulla connessione
+console.log('Ambiente:', process.env.NODE_ENV || 'development');
+console.log('Connessione al database (mascherata):', DATABASE_URL.replace(/:\/\/([^:]+):[^@]+@/, '://$1:****@'));
+
+// Configurazione del client Prisma
+const prismaOptions = {
+  log: ['query', 'error', 'warn'],
+  errorFormat: 'pretty',
+  datasources: {
+    db: {
+      url: DATABASE_URL,
+    },
+  },
+};
+
 // Gestione delle connessioni in ambiente serverless
 // In ambiente serverless, è importante riutilizzare le connessioni
 const globalForPrisma = global;
 
 // Utilizziamo una variabile globale per mantenere la connessione tra le invocazioni
-const prisma = globalForPrisma.prisma || new PrismaClient({
-  log: ['query', 'error', 'warn'],
-  errorFormat: 'pretty',
-});
+let prisma;
 
-// Solo in ambiente di sviluppo assegniamo prisma alla variabile globale
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+// Verifica se esiste già un'istanza di PrismaClient
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient(prismaOptions);
+} else {
+  // In sviluppo, riutilizziamo la connessione esistente
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = new PrismaClient(prismaOptions);
+  }
+  prisma = globalForPrisma.prisma;
+}
 
 // Gestione degli errori di connessione
 prisma.$on('query', (e) => {
@@ -23,5 +47,21 @@ prisma.$on('query', (e) => {
 prisma.$on('error', (e) => {
   console.error('Prisma Error:', e);
 });
+
+// Funzione per testare la connessione al database
+const testConnection = async () => {
+  try {
+    console.log('Tentativo di connessione al database...');
+    await prisma.$connect();
+    console.log('Connessione al database riuscita!');
+    return true;
+  } catch (error) {
+    console.error('Errore di connessione al database:', error);
+    return false;
+  }
+};
+
+// Esegui il test di connessione all'avvio
+testConnection();
 
 module.exports = prisma;

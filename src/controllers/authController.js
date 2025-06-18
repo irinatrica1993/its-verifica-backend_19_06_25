@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const prisma = require('../prisma');
 
 // Valore di fallback per JWT_SECRET in caso non sia configurato
-const JWT_SECRET = process.env.JWT_SECRET || 'its-verifica-default-jwt-secret-key-2025';
+const JWT_SECRET = process.env.JWT_SECRET || 'la_tua_chiave_segreta_molto_lunga_e_complessa';
 
 // Funzione per gestire gli errori in modo consistente
 const handleError = (res, error, message) => {

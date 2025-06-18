@@ -2,6 +2,18 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const prisma = require('../prisma');
 
+// Valore di fallback per JWT_SECRET in caso non sia configurato
+const JWT_SECRET = process.env.JWT_SECRET || 'its-verifica-default-jwt-secret-key-2025';
+
+// Funzione per gestire gli errori in modo consistente
+const handleError = (res, error, message) => {
+  console.error(`Errore: ${message}`, error);
+  return res.status(500).json({ 
+    message, 
+    error: process.env.NODE_ENV === 'development' ? error.message : undefined 
+  });
+};
+
 // Registrazione di un nuovo utente
 const register = async (req, res) => {
   try {
@@ -36,7 +48,7 @@ const register = async (req, res) => {
       if (authHeader && authHeader.startsWith('Bearer ')) {
         try {
           const token = authHeader.split(' ')[1];
-          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          const decoded = jwt.verify(token, JWT_SECRET);
           
           // Verifica se l'utente che fa la richiesta è un admin
           if (decoded.role !== 'admin') {
@@ -85,8 +97,7 @@ const register = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Errore durante la registrazione:', error);
-    res.status(500).json({ message: 'Errore durante la registrazione', error: error.message });
+    return handleError(res, error, 'Errore durante la registrazione');
   }
 };
 
@@ -128,8 +139,7 @@ const login = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Errore durante il login:', error);
-    res.status(500).json({ message: 'Errore durante il login', error: error.message });
+    return handleError(res, error, 'Errore durante il login');
   }
 };
 
@@ -154,8 +164,7 @@ const getProfile = async (req, res) => {
 
     res.json(user);
   } catch (error) {
-    console.error('Errore durante il recupero del profilo:', error);
-    res.status(500).json({ message: 'Errore durante il recupero del profilo', error: error.message });
+    return handleError(res, error, 'Errore durante il recupero del profilo');
   }
 };
 

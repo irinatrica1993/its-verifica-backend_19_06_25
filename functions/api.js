@@ -35,8 +35,12 @@ app.get('/api', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Si è verificato un errore interno del server' });
+  console.error('Errore:', err);
+  console.error('Stack trace:', err.stack);
+  res.status(500).json({ 
+    message: 'Si è verificato un errore interno del server', 
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined 
+  });
 });
 
 // Esporta l'handler per Netlify Functions

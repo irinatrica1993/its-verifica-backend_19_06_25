@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const prisma = require('../prisma');
 
+// Valore di fallback per JWT_SECRET in caso non sia configurato
+const JWT_SECRET = process.env.JWT_SECRET || 'its-verifica-default-jwt-secret-key-2025';
+
 // Middleware per verificare il token JWT
 const authenticate = async (req, res, next) => {
   try {
@@ -14,7 +17,7 @@ const authenticate = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
 
     // Verifica il token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     
     // Trova l'utente nel database
     const user = await prisma.user.findUnique({
@@ -34,6 +37,7 @@ const authenticate = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.error('Errore di autenticazione:', error);
     return res.status(401).json({ message: 'Token non valido o scaduto.' });
   }
 };

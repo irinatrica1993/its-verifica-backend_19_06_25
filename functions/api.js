@@ -11,7 +11,26 @@ app.use(express.json());
 
 // Middleware CORS personalizzato per Netlify Functions
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://its-verifica-auth-system.windsurf.build');
+  // Ottieni l'origine dalla richiesta
+  const origin = req.headers.origin;
+  
+  // Lista delle origini consentite
+  const allowedOrigins = [
+    'https://its-verifica-auth-system.windsurf.build', 
+    'https://its-verifica-auth-system-railway.windsurf.build',
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:3000'
+  ];
+  
+  // Se l'origine è nella lista delle origini consentite, imposta l'header
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    // Per richieste senza origine (es. Postman) o origini non consentite
+    res.setHeader('Access-Control-Allow-Origin', 'https://its-verifica-auth-system-railway.windsurf.build');
+  }
+  
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true');

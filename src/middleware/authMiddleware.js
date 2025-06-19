@@ -30,8 +30,10 @@ const authenticate = async (req, res, next) => {
 
     // Aggiungi l'utente alla richiesta
     req.user = {
-      id: user.id,
+      userId: user.id,
       email: user.email,
+      nome: user.nome,
+      cognome: user.cognome,
       role: user.role
     };
 
@@ -43,11 +45,26 @@ const authenticate = async (req, res, next) => {
 };
 
 // Middleware per verificare il ruolo di admin
-const isAdmin = (req, res, next) => {
+const isOrganizzatore = (req, res, next) => {
   if (!req.user || req.user.role !== 'admin') {
     return res.status(403).json({ message: 'Accesso negato. Richiesti privilegi di amministratore.' });
   }
   next();
 };
 
-module.exports = { authenticate, isAdmin };
+// Middleware per verificare che l'utente sia il proprietario della risorsa o un admin
+const isOwnerOrOrganizzatore = (resourceUserId) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ message: 'Accesso non autorizzato.' });
+    }
+    
+    if (req.user.role === 'admin' || req.user.userId === resourceUserId) {
+      next();
+    } else {
+      return res.status(403).json({ message: 'Accesso negato. Non sei autorizzato ad accedere a questa risorsa.' });
+    }
+  };
+};
+
+module.exports = { authenticate, isOrganizzatore, isOwnerOrOrganizzatore };

@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Schema Prisma per l'applicazione di gestione eventi
 
 generator client {
   provider = "prisma-client-js"
@@ -13,24 +9,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Modello User basato sulla collezione nel database MongoDB
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  name      String?
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  email     String      @unique
+  nome      String
+  cognome   String
   password  String
-  role      String   @default("user") // Possibili valori: "user", "admin"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
+  role      String      @default("user") // Valori: "user" (dipendente), "admin" (organizzatore/amministratore)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  iscrizioni Iscrizione[] // Relazione con le iscrizioni dell'utente
 }
 
-model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String   @db.ObjectId
+// Modello Evento per la gestione degli eventi
+model Evento {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  titolo      String
+  data        DateTime
+  descrizione String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  iscrizioni  Iscrizione[] // Relazione con le iscrizioni all'evento
+}
+
+// Modello Iscrizione per gestire le iscrizioni degli utenti agli eventi
+model Iscrizione {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String    @db.ObjectId
+  eventoId          String    @db.ObjectId
+  checkinEffettuato Boolean   @default(false)
+  oraCheckin        DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relazioni
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  evento            Evento    @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  
+  // Indici
+  @@unique([userId, eventoId]) // Un utente può iscriversi una sola volta a un evento
 }

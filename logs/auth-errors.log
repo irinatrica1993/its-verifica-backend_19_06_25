@@ -1,0 +1,85 @@
+
+[2025-06-19T09:56:42.485Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:74:12)",
+  "details": {}
+}
+-----------------------------------
+[2025-06-19T10:02:04.488Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)",
+  "details": {}
+}
+-----------------------------------
+[2025-06-19T10:02:51.606Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)",
+  "details": {}
+}
+-----------------------------------
+[2025-06-19T10:05:30.021Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)",
+  "details": {}
+}
+-----------------------------------
+[2025-06-19T10:10:58.469Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)",
+  "details": {}
+}
+-----------------------------------
+[2025-06-19T10:13:49.563Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:75:12)",
+  "details": {}
+}
+-----------------------------------
+[2025-06-19T10:14:43.715Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:75:12)",
+  "details": {}
+}
+-----------------------------------
+[2025-06-19T10:19:20.161Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:75:12)",
+  "details": {}
+}
+-----------------------------------
+[2025-06-19T10:19:30.460Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:75:12)",
+  "details": {}
+}
+-----------------------------------
+[2025-06-19T10:21:45.551Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)",
+  "details": "{\"stack\":\"TypeError: Assignment to constant variable.\\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)\",\"message\":\"Assignment to constant variable.\"}"
+}
+-----------------------------------
+[2025-06-19T10:22:49.223Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)",
+  "details": "{\"stack\":\"TypeError: Assignment to constant variable.\\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)\",\"message\":\"Assignment to constant variable.\"}"
+}
+-----------------------------------
+[2025-06-19T10:23:06.265Z] Errore durante la registrazione
+{
+  "error": "Assignment to constant variable.",
+  "stack": "TypeError: Assignment to constant variable.\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)",
+  "details": "{\"stack\":\"TypeError: Assignment to constant variable.\\n    at register (/Users/irinatrica/its-verifica-19-06-25/its-verifica-backend/src/controllers/authController.js:78:12)\",\"message\":\"Assignment to constant variable.\"}"
+}
+-----------------------------------

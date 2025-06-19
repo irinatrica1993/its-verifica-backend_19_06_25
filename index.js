@@ -6,6 +6,8 @@ const prisma = require('./src/prisma');
 // Importa le rotte
 const authRoutes = require('./src/routes/authRoutes');
 const userRoutes = require('./src/routes/userRoutes');
+const eventoRoutes = require('./src/routes/eventoRoutes');
+const iscrizioneRoutes = require('./src/routes/iscrizioneRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Cambiato da 5000 a 3000 perché la porta 5000 è già in uso
@@ -45,6 +47,8 @@ app.get('/api', async (req, res) => {
 // Rotte API
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/eventi', eventoRoutes);
+app.use('/api/iscrizioni', iscrizioneRoutes);
 
 // Middleware per la gestione degli errori
 app.use((err, req, res, next) => {

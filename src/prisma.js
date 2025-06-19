@@ -1,20 +1,28 @@
 const { PrismaClient } = require('@prisma/client');
 
-// Definisci un DATABASE_URL di fallback per l'ambiente di produzione
-// Utilizziamo il vero URL del database MongoDB Atlas
+// Usa l'URL del database dall'ambiente o un valore di fallback
+// Utilizziamo lo stesso URL che funziona su Railway
 const DATABASE_URL = process.env.DATABASE_URL || 'mongodb+srv://irinatrica140:Cassiere01@cluster0.2ik5jax.mongodb.net/its-verifica-db?retryWrites=true&w=majority&appName=Cluster0';
 
 // Stampa informazioni di debug sulla connessione
 console.log('Ambiente:', process.env.NODE_ENV || 'development');
 console.log('Connessione al database (mascherata):', DATABASE_URL.replace(/:\/\/([^:]+):[^@]+@/, '://$1:****@'));
+console.log('Tentativo di connessione al database...');
 
-// Configurazione del client Prisma
+// Configurazione del client Prisma con timeout più lungo per la connessione
 const prismaOptions = {
   log: ['query', 'error', 'warn'],
   errorFormat: 'pretty',
   datasources: {
     db: {
       url: DATABASE_URL,
+    },
+  },
+  // Aggiungiamo opzioni specifiche per MongoDB
+  __internal: {
+    engine: {
+      connectTimeout: 60000, // 60 secondi di timeout per la connessione
+      queryTimeout: 60000,   // 60 secondi di timeout per le query
     },
   },
 };

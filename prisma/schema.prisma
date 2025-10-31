@@ -13,8 +13,8 @@ datasource db {
 model User {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId
   email     String      @unique
-  nome      String
-  cognome   String
+  nome      String?     // Opzionale per compatibilità con dati esistenti
+  cognome   String?     // Opzionale per compatibilità con dati esistenti
   password  String
   role      String      @default("user") // Valori: "user" (dipendente), "admin" (organizzatore/amministratore)
   createdAt DateTime    @default(now())

@@ -155,9 +155,11 @@ const register = async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        nome: user.nome,
-        cognome: user.cognome,
-        role: user.role
+        nome: user.nome || 'N/A',
+        cognome: user.cognome || 'N/A',
+        role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
       }
     });
   } catch (error) {
@@ -203,9 +205,11 @@ const login = async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        nome: user.nome,
-        cognome: user.cognome,
-        role: user.role
+        nome: user.nome || 'N/A',
+        cognome: user.cognome || 'N/A',
+        role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
       }
     });
   } catch (error) {

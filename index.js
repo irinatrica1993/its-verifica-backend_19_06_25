@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const prisma = require('./src/prisma');
+const { ensureAdminExists } = require('./src/utils/ensureAdmin');
 
 // Importa le rotte
 const authRoutes = require('./src/routes/authRoutes');
@@ -59,7 +60,38 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server in esecuzione sulla porta ${PORT}`);
+// Funzione per inizializzare il server
+async function startServer() {
+  try {
+    console.log('🚀 Avvio del server...');
+    
+    // Verifica connessione al database
+    console.log('📊 Connessione al database...');
+    await prisma.$connect();
+    console.log('✅ Connessione al database stabilita');
+    
+    // Assicura che l'admin esista prima di avviare il server
+    console.log('👤 Verifica admin di sistema...');
+    await ensureAdminExists();
+    
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`✅ Server in esecuzione sulla porta ${PORT}`);
+      console.log(`📍 API disponibile su: http://localhost:${PORT}/api`);
+    });
+  } catch (error) {
+    console.error('❌ Errore durante l\'avvio del server:', error);
+    process.exit(1);
+  }
+}
+
+// Gestione della chiusura del server
+process.on('SIGINT', async () => {
+  console.log('\n🛑 Chiusura del server...');
+  await prisma.$disconnect();
+  console.log('✅ Disconnessione dal database completata');
+  process.exit(0);
 });
+
+// Avvia il server
+startServer();
